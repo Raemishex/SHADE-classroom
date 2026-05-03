@@ -26,4 +26,5 @@ jobs:
           git init
           git add .
           git commit -m "Sync from GitHub"
+          git branch -M main
           git push --force https://raemishex:$HF_TOKEN@huggingface.co/spaces/raemishex/SHADE-classroom-server main
