@@ -1,0 +1,43 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --bg-primary: #0f0f1a;
+    --bg-card: #1a1a2e;
+    --bg-elevated: #16213e;
+    --accent-primary: #e94560;
+    --accent-secondary: #0f3460;
+    --text-primary: #eaeaea;
+    --text-muted: #8892b0;
+    --citizen-color: #4ade80;
+    --imposter-color: #f87171;
+    --ready-color: #4ade80;
+    --not-ready-color: #64748b;
+  }
+  
+  body {
+    @apply bg-background-primary text-text-primary font-inter m-0 p-0 overflow-x-hidden w-full h-full;
+  }
+  
+  #root {
+    @apply min-h-screen w-full flex flex-col;
+  }
+}
+
+.perspective-1000 {
+  perspective: 1000px;
+}
+
+.transform-style-3d {
+  transform-style: preserve-3d;
+}
+
+.backface-hidden {
+  backface-visibility: hidden;
+}
+
+.rotate-y-180 {
+  transform: rotateY(180deg);
+}
