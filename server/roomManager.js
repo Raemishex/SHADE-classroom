@@ -48,22 +48,44 @@ function findRoomByPlayerId(socketId) {
 function calculateImposterCount(playerCount, manualCount) {
   if (manualCount === "auto" || manualCount === 0 || manualCount === "0") {
     if (playerCount <= 5) return 1;
-    return 2;
+    if (playerCount <= 8) return 2;
+    if (playerCount <= 11) return 3;
+    if (playerCount <= 14) return 4;
+    return 5;
   }
-  const max = Math.floor(playerCount / 2) - 1;
-  return Math.min(Number(manualCount), max > 0 ? max : 1);
+  // Allow manual override up to playerCount - 1
+  const max = Math.max(1, playerCount - 1);
+  return Math.min(Number(manualCount), max);
 }
 
 function assignRoles(room, io) {
   const players = room.players;
   const count = calculateImposterCount(players.length, room.settings.imposterCount);
   
-  // Shuffle player array
-  const shuffled = [...players].sort(() => Math.random() - 0.5);
+  // Initialize imposter history to ensure fair distribution
+  if (!room.imposterHistory) room.imposterHistory = {};
+  players.forEach(p => {
+    if (room.imposterHistory[p.id] === undefined) room.imposterHistory[p.id] = 0;
+  });
+
+  // Fisher-Yates Shuffle to randomize ties perfectly
+  const shuffled = [...players];
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+  
+  // Sort by imposter history so those who were imposter least get priority
+  shuffled.sort((a, b) => room.imposterHistory[a.id] - room.imposterHistory[b.id]);
   
   // First `count` players become imposters, rest are citizens
   shuffled.forEach((player, index) => {
-    player.role = index < count ? "imposter" : "citizen";
+    if (index < count) {
+      player.role = "imposter";
+      room.imposterHistory[player.id]++;
+    } else {
+      player.role = "citizen";
+    }
   });
   
   // Select random category
@@ -246,6 +268,23 @@ module.exports = function setupRoomHandlers(io, socket) {
     
     room.settings = { ...room.settings, ...settings };
     io.to(roomCode).emit("room_updated", { room: sanitizeRoom(room) });
+  });
+
+  socket.on("kick_player", ({ roomCode, targetId }) => {
+    const room = rooms[roomCode];
+    if (!room || room.hostId !== socket.id) return;
+    
+    const targetPlayer = room.players.find(p => p.id === targetId);
+    if (targetPlayer && !targetPlayer.isHost) {
+      io.to(targetId).emit("kicked");
+      room.players = room.players.filter(p => p.id !== targetId);
+      
+      const targetSocket = io.sockets.sockets.get(targetId);
+      if (targetSocket) {
+        targetSocket.leave(roomCode);
+      }
+      io.to(roomCode).emit("room_updated", { room: sanitizeRoom(room) });
+    }
   });
 
   socket.on("start_game", ({ roomCode }) => {

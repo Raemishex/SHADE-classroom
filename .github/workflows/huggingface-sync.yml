@@ -8,7 +8,7 @@ jobs:
   sync-to-hub:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
       
@@ -20,11 +20,11 @@ jobs:
           git config --global user.name "GitHub Actions"
           
           # Server qovluğunu ayrıca bir yerə kopyalayıb təmiz şəkildə göndəririk
-          mkdir temp_hf
+          mkdir -p temp_hf
           cp -r server/* temp_hf/
           cd temp_hf
           git init
           git add .
-          git commit -m "Sync from GitHub"
+          git commit -m "Sync from GitHub — $(date '+%Y-%m-%d %H:%M')"
           git branch -M main
-          git push --force https://raemishex:$HF_TOKEN@huggingface.co/spaces/raemishex/SHADE-classroom-server main
+          git push --force https://raemishex:${HF_TOKEN}@huggingface.co/spaces/raemishex/SHADE-classroom-server main

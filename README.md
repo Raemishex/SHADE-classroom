@@ -1,6 +1,6 @@
-# SHADE Classroom 🕵️‍♂️ (v1.0 Beta)
+# SHADE Classroom 🕵️‍♂️ (v2.0)
 
-SHADE Classroom dostlarınızla eyni otaqda oynaya biləcəyiniz, real-vaxt (real-time) sosial deduksiya və söz oyunudur. Bu versiya oyunun **İlk Beta Versiyasıdır (v1.0)**.
+SHADE Classroom dostlarınızla eyni otaqda oynaya biləcəyiniz, real-vaxt (real-time) sosial deduksiya və söz oyunudur.
 
 ## Oyun Haqqında
 
@@ -10,49 +10,58 @@ Oyunda oyunçular iki qrupa bölünür:
 
 Oyun heç bir səsvermə ekranı və ya taymer olmadan tamamən "real həyatda" davam edir. Ekranda yalnız lazım olan məlumatlar göstərilir, qalan hər şey müzakirə üzərində qurulur.
 
+---
+
+## v2.0 — Yeniliklər və Dəyişikliklər 🚀
+
+### 🎨 Tam Yenilənmiş Dizayn (Neon Noir Glass)
+- Bütün interfeys sıfırdan yenidən dizayn edilib: qaranlıq glassmorphism temalı, neon işıqlar, premium tipografiya (Rajdhani, Syne, Space Mono).
+- Hər səhifə üçün hamar keçid animasiyaları (page transitions) əlavə olunub.
+- Mobil cihazlara tam uyğunlaşdırılmış responsive dizayn.
+
+### 🔒 Təkmilləşdirilmiş Gizlilik Sistemi
+- Oyun ekranında (GamePage) yuxarıdakı rol paneli artıq **tamamilə neytral** görünür — kənardan baxan birinin sizin imposter və ya vətəndaş olduğunuzu bilməsi mümkün deyil.
+- Gizli söz və kateqoriya `••••••••` ilə maskalanır. Yalnız 👁️ (Peek) düyməsinə basıldıqda açılır.
+
+### 🎯 İmposter Mexanikası Təkmilləşdirmələri
+- **İmposter sayı 1-dən 5-ə qədər** dəstəklənir (əvvəl yalnız 1-2 idi).
+- **Ədalətli paylanma alqoritmi:** İmposter rolu artıq hər raundda tarix əsasında paylanır — ən az imposter olmuş oyunçulara növbəti raundlarda prioritet verilir. Eyni oyunçunun ardıcıl imposter olma problemi həll edildi.
+- **İmposter İpucu rejimi:** Host tərəfindən açılıb-bağlana bilən yeni tənzimləmə. Bağlı olduqda imposterə kateqoriya göstərilmir — oyun daha çətin olur.
+
+### 🤝 İmposter İttifaqı
+- İmposterlər istəyə bağlı olaraq bir-birini görə bilər (Host tərəfindən aktivləşdirilir).
+
+### 👢 Oyunçunu Çıxartma (Kick)
+- Host artıq Lobby-dən AFK qalan, xətdə olmayan və ya istənməyən oyunçuları **otaqdan çıxara bilər** (X düyməsi).
+
+### 📋 Otaq Kodu Kopyalama
+- Otaq koduna kliklədikdə avtomatik olaraq **clipboard-ə kopyalanır** və "Kopyalandı!" bildirişi göstərilir.
+
+### ⬅️ Geri Düyməsi
+- Lobby ekranında sol üst küncdə **geri oxu** düyməsi əlavə olunub — otaqdan çıxmaq üçün istifadə olunur.
+
+### 📡 Bağlantı İndikatoru
+- İnternet bağlantısı kəsildikdə ekranın yuxarısında **"Bağlantı kəsildi"** bildirişi avtomatik görünür.
+
+### 🏷️ Kateqoriya Sayğacı
+- Lobby-də seçilmiş kateqoriyaların sayı açıq şəkildə göstərilir (məsələn, "Kateqoriyalar (3/10)").
+
+---
+
 ## Xüsusiyyətlər (Features)
 - 🚀 **Real-Time Multiplayer:** Socket.io ilə eyni anda çoxlu oyunçu dəstəyi.
-- 🎨 **Tünd Mövzu və Neon UI:** Gecə oyunları və partilər üçün uyğun dizayn.
-- 🔒 **Gizlilik:** Telefonunuzun ekranındakı söz "Gizlilik qorunur" rejimində arxada gizlədilir. Yalnız (👁️) düyməsinə basıb saxladığınız zaman görünür.
+- 🎨 **Neon Noir Glass UI:** Gecə oyunları və partilər üçün premium dizayn.
+- 🔒 **Gizlilik:** Telefonunuzun ekranındakı söz arxada gizlədilir. Yalnız 👁️ düyməsinə basıb saxladığınız zaman görünür.
 - 🤝 **İmposter İttifaqı:** İmposterlər istərsə bir-birini görə bilərlər.
+- 👢 **Kick Sistemi:** Host istənməyən oyunçuları otaqdan çıxara bilər.
+- 📋 **Kopyalama:** Otaq kodu bir klik ilə kopyalanır.
+- ⚖️ **Ədalətli Paylanma:** İmposter rolu bərabər paylanır, eyni oyunçu ardıcıl seçilmir.
 
 ## Necə Oynamaq Olar?
 1. Bir nəfər **"Otaq Yarat"** düyməsinə basır və 4 rəqəmli otaq kodu əldə edir.
 2. Digər dostlar **"Otağa Qoşul"** edib bu kodu daxil edirlər.
-3. Host oyun tənzimləmələrini (İmposter sayı, kateqoriyalar) seçir və oyunu başladır.
+3. Host oyun tənzimləmələrini (İmposter sayı, kateqoriyalar, İttifaq, İpucu rejimi) seçir və oyunu başladır.
 4. Hər kəs telefonunda gələn **Kartı görmək üçün basıb saxla** funksiyası ilə roluna və sözünə (və ya ipucusuna) baxır.
 5. "İlk danışan" kimi təyin olunan oyunçudan başlayaraq hər kəs sözlə bağlı bir cümlə deyir.
 6. Müzakirələrdən sonra imposterin kim olduğuna səs verilir.
 7. Host **"Oyunu Bitir"** düyməsinə basaraq əsl İmposterlərin kim olduğunu ekranda hamıya açıqlayır.
-
----
-
-## Serveri və Frontendi Necə Host Etmək Olar? (Dostlarla Oynamaq Üçün Təlimat)
-
-Oyunu uzaqdan və fərqli cihazlarda oynamaq üçün backend (server) və frontend (client) hissələrini fərqli platformalarda pulsuz host edə bilərsiniz.
-
-### 1. Backend (Server) Hostinqi (Railway, Koyeb və ya Fly.io)
-Çünki server Node.js və Socket.io istifadə edir, onu 24/7 və ya sorğu əsasında aktiv ola biləcək bir platformada yükləməlisiniz. (Render bəzi regionlarda dəstəyi dayandırdığı üçün bu alternativlərdən birini seçə bilərsiniz).
-- **Tövsiyə olunan:** [Railway.app](https://railway.app), [Koyeb.com](https://koyeb.com) və ya [Fly.io](https://fly.io).
-- **Quraşdırma (Məsələn, Railway.app):**
-  1. Yalnız `server` qovluğunu ayrı bir GitHub repozitoriyasına yükləyin (və ya repoda Root Directory olaraq `server` seçin).
-  2. Railway.app-da yeni "Project" yaradın və "Deploy from GitHub repo" seçin.
-  3. GitHub reposunu seçin və Railway onu avtomatik analiz edib Node.js olduğunu anlayacaq.
-  4. Start Command olaraq `node index.js` təyin edin.
-  5. Deploy etdikdən sonra Railway sizə bir URL verəcək (məsələn: `https://kostebek-server.up.railway.app`). Bu sizin backend URL-iniz olacaq.
-
-### 2. Frontend (Client) Hostinqi (Vercel və ya Netlify)
-Frontend React və Vite üzərində qurulub, statik fayllar olduğu üçün Vercel-də pulsuz host edə bilərsiniz.
-- **Quraşdırma:**
-  1. `client` qovluğunu GitHub-a yükləyin.
-  2. [Vercel.com](https://vercel.com) saytına daxil olub yeni layihə (Add New Project) əlavə edin.
-  3. Yüklədiyiniz repozitoriyanı seçin. Root Directory kimi `client` təyin edin.
-  4. **Ən vacib addım:** "Environment Variables" (Mühit Dəyişənləri) bölməsinə daxil olun.
-     - Key: `VITE_SOCKET_URL`
-     - Value: Bayaq Railway-dən aldığınız backend URL-i (məsələn: `https://kostebek-server.up.railway.app`)
-  5. Deploy edin. 
-
-Bununla da oyun tamamilə onlayn olacaq və dostlarınızla onlayn otaqlar yaradıb oynaya biləcəksiniz!
-
----
-**Versiya:** v1.0 (Beta)
