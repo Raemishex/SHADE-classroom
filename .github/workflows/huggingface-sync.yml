@@ -23,6 +23,20 @@ jobs:
           mkdir -p temp_hf
           cp -r server/* temp_hf/
           cd temp_hf
+          
+          # Hugging Face üçün zəruri olan konfiqurasiya faylını yaradırıq
+          cat << 'EOF' > README.md
+---
+title: SHADE Classroom Server
+emoji: 🕵️‍♂️
+colorFrom: purple
+colorTo: indigo
+sdk: docker
+pinned: false
+---
+This is the backend server for SHADE Classroom.
+EOF
+
           git init
           git add .
           git commit -m "Sync from GitHub — $(date '+%Y-%m-%d %H:%M')"
