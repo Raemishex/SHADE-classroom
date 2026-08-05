@@ -78,11 +78,15 @@ function assignRoles(room, io) {
   // Sort by imposter history so those who were imposter least get priority
   shuffled.sort((a, b) => room.imposterHistory[a.id] - room.imposterHistory[b.id]);
   
-  // First `count` players become imposters, rest are citizens
+  // Role Assignment: Imposters, Detective, Joker, Citizens
   shuffled.forEach((player, index) => {
     if (index < count) {
       player.role = "imposter";
       room.imposterHistory[player.id]++;
+    } else if (room.settings.detectiveEnabled && index === count && players.length >= 4) {
+      player.role = "detective";
+    } else if (room.settings.jokerEnabled && index === (room.settings.detectiveEnabled ? count + 1 : count) && players.length >= 5) {
+      player.role = "joker";
     } else {
       player.role = "citizen";
     }
@@ -116,13 +120,17 @@ function assignRoles(room, io) {
 
   players.forEach(player => {
     const isImposter = player.role === "imposter";
+    const isJoker = player.role === "joker";
+    const isDetective = player.role === "detective";
+    
     const allies = isImposter && room.settings.allianceMode
       ? players.filter(p => p.role === "imposter" && p.id !== player.id).map(p => p.name)
       : [];
     
+    // Strict Payload Security: Imposters and Jokers never get the secret word
     io.to(player.id).emit("game_started", {
       role: player.role,
-      word: isImposter ? null : room.currentWord,
+      word: (isImposter || isJoker) ? null : room.currentWord,
       categoryName: room.currentCategory.nameAz,
       categoryIcon: room.currentCategory.icon,
       allies: allies,
