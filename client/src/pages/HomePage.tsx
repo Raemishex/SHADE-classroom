@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, BookOpen, HelpCircle, Play, Key, User } from 'lucide-react';
 import { socket } from '../socket';
+import { SoundFX } from '../utils/SoundFX';
 
 type Mode = 'menu' | 'create' | 'join';
 
@@ -9,14 +10,17 @@ export default function HomePage() {
   const [name, setName] = useState('');
   const [roomCode, setRoomCode] = useState('');
   const [mode, setMode] = useState<Mode>('menu');
+  const [showRules, setShowRules] = useState(false);
 
   const handleCreateRoom = () => {
     if (!name.trim()) return;
+    SoundFX.playClick();
     socket.emit('create_room', { playerName: name.trim() });
   };
 
   const handleJoinRoom = () => {
     if (!name.trim() || roomCode.length < 4) return;
+    SoundFX.playClick();
     socket.emit('join_room', { roomCode: roomCode.trim(), playerName: name.trim() });
   };
 
@@ -24,87 +28,106 @@ export default function HomePage() {
   const canJoin   = name.trim().length > 0 && roomCode.length === 4;
 
   const slideVariants = {
-    initial: { opacity: 0, y: 32, filter: 'blur(4px)' },
+    initial: { opacity: 0, y: 24, filter: 'blur(3px)' },
     animate: { opacity: 1, y: 0,  filter: 'blur(0px)' },
-    exit:    { opacity: 0, y: -20, filter: 'blur(4px)' },
+    exit:    { opacity: 0, y: -16, filter: 'blur(3px)' },
   };
 
   return (
-    <div className="relative flex flex-col items-center justify-center min-h-dvh px-5 overflow-hidden">
+    <div className="relative flex flex-col items-center justify-center flex-1 px-4 overflow-hidden py-8 z-10">
 
-      {/* Ambient orbs */}
-      <div className="pointer-events-none fixed inset-0 -z-10 overflow-hidden">
-        <div className="absolute -top-32 -left-32 w-80 h-80 rounded-full"
-          style={{ background: 'radial-gradient(circle, rgba(191,95,255,0.12) 0%, transparent 70%)' }} />
-        <div className="absolute -bottom-40 -right-40 w-96 h-96 rounded-full"
-          style={{ background: 'radial-gradient(circle, rgba(255,45,85,0.07) 0%, transparent 70%)' }} />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 rounded-full"
-          style={{ background: 'radial-gradient(circle, rgba(191,95,255,0.05) 0%, transparent 70%)' }} />
-      </div>
-
-      {/* Logo block */}
+      {/* Velvet Intrigue Brand Title */}
       <motion.div
-        initial={{ opacity: 0, y: -24 }}
+        initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] }}
-        className="text-center mb-12 select-none"
+        transition={{ duration: 0.5, ease: [0.23, 1, 0.32, 1] }}
+        className="text-center mb-10 select-none"
       >
-        {/* Logo glow underlay */}
         <div className="relative inline-block">
-          <div className="absolute inset-0 -z-10 blur-3xl opacity-40"
-            style={{ background: 'radial-gradient(ellipse, rgba(191,95,255,0.6) 0%, transparent 70%)' }} />
-
-          <h1 className="font-rajdhani font-bold text-[5.5rem] leading-none tracking-[0.1em] text-white text-neon-glow-purple">
+          <h1 className="font-heading font-black text-6xl md:text-7xl leading-none tracking-[0.15em] text-[#f0ecf5]">
             SHADE
           </h1>
+          <div className="h-1 w-16 mx-auto mt-2 bg-[#f59e0b] rounded-full shadow-[0_0_12px_rgba(245,158,11,0.4)]" />
         </div>
 
-        {/* Subtitle row */}
-        <div className="flex items-center gap-3 justify-center mt-1">
-          <div className="h-px w-10" style={{ background: 'linear-gradient(90deg, transparent, rgba(191,95,255,0.5))' }} />
-          <span className="font-mono text-[0.65rem] tracking-[0.35em] uppercase"
-            style={{ color: 'var(--text-secondary)' }}>
-            Classroom
-          </span>
-          <div className="h-px w-10" style={{ background: 'linear-gradient(270deg, transparent, rgba(191,95,255,0.5))' }} />
-        </div>
-
-        {/* Beta badge */}
-        <div className="mt-4">
-          <span className="inline-block font-mono text-[0.6rem] tracking-[0.25em] uppercase px-3 py-1 rounded-full"
-            style={{
-              color: 'var(--neon-purple)',
-              border: '1px solid rgba(191,95,255,0.3)',
-              background: 'rgba(191,95,255,0.06)',
-            }}>
-            v1.0 Beta
-          </span>
-        </div>
+        <p className="font-body text-sm tracking-wide text-[#a39bb5] mt-3">
+          Kölgədə kim gizlənir? — Sosial Deduksiya Və Kələm Oyunu
+        </p>
       </motion.div>
 
-      {/* Panel */}
-      <div className="w-full max-w-sm">
+      {/* Main Action Cards */}
+      <div className="w-full max-w-md space-y-4">
         <AnimatePresence mode="wait">
           {mode === 'menu' && (
             <motion.div
               key="menu"
               variants={slideVariants}
               initial="initial" animate="animate" exit="exit"
-              transition={{ duration: 0.3, ease: [0.25, 0.46, 0.45, 0.94] }}
-              className="flex flex-col gap-3"
+              transition={{ duration: 0.3, ease: [0.23, 1, 0.32, 1] }}
+              className="space-y-4"
             >
-              <button onClick={() => setMode('create')} className="btn-primary">
-                Otaq Yarat
-              </button>
-              <button onClick={() => setMode('join')} className="btn-ghost">
-                Otağa Qoşul
-              </button>
+              {/* Dual Velvet Cards */}
+              <div className="grid grid-cols-2 gap-4">
+                {/* Create Room Card */}
+                <div
+                  onClick={() => {
+                    SoundFX.playClick();
+                    setMode('create');
+                  }}
+                  className="card-surface p-5 text-center flex flex-col items-center justify-between space-y-4 cursor-pointer hover:border-[rgba(245,158,11,0.4)] transition-all group"
+                >
+                  <div className="w-14 h-14 rounded-2xl bg-[rgba(245,158,11,0.1)] border border-[rgba(245,158,11,0.2)] flex items-center justify-center text-[#f59e0b] group-hover:scale-105 transition-transform">
+                    <Play className="w-7 h-7 fill-current ml-0.5" />
+                  </div>
+                  <div>
+                    <h3 className="font-heading font-bold text-lg text-[#f0ecf5] group-hover:text-[#f59e0b] transition-colors">
+                      OTAQ YARAT
+                    </h3>
+                    <p className="text-xs text-[#a39bb5] mt-1">
+                      Oyun meyxanı başlat
+                    </p>
+                  </div>
+                  <button className="btn-primary py-2.5 text-sm font-bold tracking-wider">
+                    BAŞLAT
+                  </button>
+                </div>
 
-              {/* Tagline */}
-              <p className="text-center font-mono text-[0.6rem] tracking-[0.2em] mt-4 uppercase"
-                style={{ color: 'var(--text-ghost)' }}>
-                Real-time · Sosial deduksiya
-              </p>
+                {/* Join Room Card */}
+                <div
+                  onClick={() => {
+                    SoundFX.playClick();
+                    setMode('join');
+                  }}
+                  className="card-surface p-5 text-center flex flex-col items-center justify-between space-y-4 cursor-pointer hover:border-[rgba(163,155,181,0.4)] transition-all group"
+                >
+                  <div className="w-14 h-14 rounded-2xl bg-[rgba(163,155,181,0.1)] border border-[rgba(163,155,181,0.2)] flex items-center justify-center text-[#f0ecf5] group-hover:scale-105 transition-transform">
+                    <Key className="w-7 h-7" />
+                  </div>
+                  <div>
+                    <h3 className="font-heading font-bold text-lg text-[#f0ecf5] group-hover:text-white transition-colors">
+                      OTAĞA QOŞUL
+                    </h3>
+                    <p className="text-xs text-[#a39bb5] mt-1">
+                      4-rəqəmli kodla daxil ol
+                    </p>
+                  </div>
+                  <button className="btn-ghost py-2.5 text-sm font-bold tracking-wider">
+                    QOŞUL
+                  </button>
+                </div>
+              </div>
+
+              {/* Rules Trigger */}
+              <button
+                onClick={() => {
+                  SoundFX.playClick();
+                  setShowRules(true);
+                }}
+                className="w-full py-3.5 px-4 rounded-2xl bg-[rgba(36,30,46,0.6)] border border-[rgba(163,155,181,0.12)] text-xs text-[#a39bb5] hover:text-[#f0ecf5] hover:border-[rgba(163,155,181,0.25)] transition-all flex items-center justify-center gap-2"
+              >
+                <HelpCircle className="w-4 h-4 text-[#f59e0b]" />
+                <span>Oyun Qaydaları Və Rol Bələdçisi</span>
+              </button>
             </motion.div>
           )}
 
@@ -113,49 +136,43 @@ export default function HomePage() {
               key="create"
               variants={slideVariants}
               initial="initial" animate="animate" exit="exit"
-              transition={{ duration: 0.3, ease: [0.25, 0.46, 0.45, 0.94] }}
-              className="flex flex-col gap-3"
+              transition={{ duration: 0.3, ease: [0.23, 1, 0.32, 1] }}
+              className="card-surface p-6 space-y-5"
             >
-              {/* Panel header */}
-              <div className="flex items-center gap-3 mb-2">
-                <button onClick={() => setMode('menu')}
-                  className="p-2 rounded-xl transition-colors"
-                  style={{ background: 'rgba(155,150,196,0.06)', border: '1px solid rgba(155,150,196,0.12)', color: 'var(--text-secondary)' }}>
-                  <ArrowLeft size={18} />
+              <div className="flex items-center justify-between">
+                <button
+                  onClick={() => setMode('menu')}
+                  className="p-2 rounded-xl bg-[rgba(163,155,181,0.1)] hover:bg-[rgba(163,155,181,0.2)] text-[#a39bb5] hover:text-[#f0ecf5] transition-colors"
+                >
+                  <ArrowLeft className="w-5 h-5" />
                 </button>
-                <div>
-                  <p className="font-rajdhani font-semibold text-xl tracking-wider text-white leading-none">
-                    Otaq Yarat
-                  </p>
-                  <p className="font-mono text-[0.6rem] tracking-wider mt-0.5" style={{ color: 'var(--text-ghost)' }}>
-                    4 rəqəmli kod əldə edəcəksiniz
-                  </p>
-                </div>
+                <h2 className="font-heading font-bold text-xl text-[#f0ecf5] tracking-wide">
+                  Otaq Yarat (Host)
+                </h2>
+                <div className="w-9" />
               </div>
 
-              <div className="relative">
+              <div>
+                <label className="block text-xs font-body text-[#a39bb5] mb-2 uppercase tracking-wider flex items-center gap-1.5">
+                  <User className="w-4 h-4 text-[#f59e0b]" /> Sizin Adınız
+                </label>
                 <input
-                  className="input-glass"
                   type="text"
-                  placeholder="Adınız"
+                  placeholder="Məsələn: Orxan"
                   value={name}
-                  onChange={e => setName(e.target.value)}
-                  onKeyDown={e => { if (e.key === 'Enter' && canCreate) handleCreateRoom(); }}
-                  maxLength={15}
+                  onChange={(e) => setName(e.target.value)}
+                  maxLength={16}
+                  className="input-glass"
                   autoFocus
                 />
-                <span className="absolute right-4 top-1/2 -translate-y-1/2 font-mono text-xs"
-                  style={{ color: 'var(--text-ghost)' }}>
-                  {name.length}/15
-                </span>
               </div>
 
               <button
                 onClick={handleCreateRoom}
                 disabled={!canCreate}
-                className="btn-primary mt-1"
+                className="btn-primary"
               >
-                Yarat
+                Davam Et ➔
               </button>
             </motion.div>
           )}
@@ -165,64 +182,103 @@ export default function HomePage() {
               key="join"
               variants={slideVariants}
               initial="initial" animate="animate" exit="exit"
-              transition={{ duration: 0.3, ease: [0.25, 0.46, 0.45, 0.94] }}
-              className="flex flex-col gap-3"
+              transition={{ duration: 0.3, ease: [0.23, 1, 0.32, 1] }}
+              className="card-surface p-6 space-y-5"
             >
-              {/* Panel header */}
-              <div className="flex items-center gap-3 mb-2">
-                <button onClick={() => setMode('menu')}
-                  className="p-2 rounded-xl transition-colors"
-                  style={{ background: 'rgba(155,150,196,0.06)', border: '1px solid rgba(155,150,196,0.12)', color: 'var(--text-secondary)' }}>
-                  <ArrowLeft size={18} />
+              <div className="flex items-center justify-between">
+                <button
+                  onClick={() => setMode('menu')}
+                  className="p-2 rounded-xl bg-[rgba(163,155,181,0.1)] hover:bg-[rgba(163,155,181,0.2)] text-[#a39bb5] hover:text-[#f0ecf5] transition-colors"
+                >
+                  <ArrowLeft className="w-5 h-5" />
                 </button>
-                <div>
-                  <p className="font-rajdhani font-semibold text-xl tracking-wider text-white leading-none">
-                    Otağa Qoşul
-                  </p>
-                  <p className="font-mono text-[0.6rem] tracking-wider mt-0.5" style={{ color: 'var(--text-ghost)' }}>
-                    Hostdan kodu alın
-                  </p>
-                </div>
+                <h2 className="font-heading font-bold text-xl text-[#f0ecf5] tracking-wide">
+                  Otağa Qoşul
+                </h2>
+                <div className="w-9" />
               </div>
 
-              <input
-                className="input-code"
-                type="text"
-                placeholder="0000"
-                value={roomCode}
-                onChange={e => setRoomCode(e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, ''))}
-                onKeyDown={e => { if (e.key === 'Enter' && canJoin) handleJoinRoom(); }}
-                maxLength={4}
-                autoFocus
-              />
-
-              <div className="relative">
+              <div>
+                <label className="block text-xs font-body text-[#a39bb5] mb-2 uppercase tracking-wider flex items-center gap-1.5">
+                  <User className="w-4 h-4 text-[#f59e0b]" /> Sizin Adınız
+                </label>
                 <input
-                  className="input-glass"
                   type="text"
-                  placeholder="Adınız"
+                  placeholder="Məsələn: Nərmin"
                   value={name}
-                  onChange={e => setName(e.target.value)}
-                  onKeyDown={e => { if (e.key === 'Enter' && canJoin) handleJoinRoom(); }}
-                  maxLength={15}
+                  onChange={(e) => setName(e.target.value)}
+                  maxLength={16}
+                  className="input-glass"
+                  autoFocus
                 />
-                <span className="absolute right-4 top-1/2 -translate-y-1/2 font-mono text-xs"
-                  style={{ color: 'var(--text-ghost)' }}>
-                  {name.length}/15
-                </span>
+              </div>
+
+              <div>
+                <label className="block text-xs font-code text-[#a39bb5] mb-2 uppercase tracking-wider">
+                  4-Rəqəmli Otaq Kodu
+                </label>
+                <input
+                  type="text"
+                  placeholder="4582"
+                  value={roomCode}
+                  onChange={(e) => setRoomCode(e.target.value.replace(/\D/g, '').slice(0, 4))}
+                  maxLength={4}
+                  className="input-code"
+                />
               </div>
 
               <button
                 onClick={handleJoinRoom}
                 disabled={!canJoin}
-                className="btn-primary mt-1"
+                className="btn-primary"
               >
-                Qoşul
+                Otağa Gir ➔
               </button>
             </motion.div>
           )}
         </AnimatePresence>
       </div>
+
+      {/* Rules Modal */}
+      <AnimatePresence>
+        {showRules && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-lg"
+          >
+            <div className="card-surface p-6 max-w-sm w-full space-y-5 border border-[rgba(163,155,181,0.2)]">
+              <div className="flex items-center gap-2">
+                <BookOpen className="w-6 h-6 text-[#f59e0b]" />
+                <h3 className="font-heading font-bold text-xl text-[#f0ecf5]">
+                  SHADE Oyunu Qaydaları
+                </h3>
+              </div>
+              <div className="space-y-3 text-xs text-[#a39bb5] leading-relaxed max-h-[60vh] overflow-y-auto pr-1">
+                <div className="p-3.5 rounded-2xl bg-[rgba(52,211,153,0.08)] border border-[rgba(52,211,153,0.2)] space-y-1">
+                  <span className="font-bold text-[#34d399] block text-sm">✅ Vətəndaşlar (Citizens):</span>
+                  <p className="text-[#f0ecf5]">Ekranındakı gizli sözü görürlər. Məqsəd sözü imposterlərə bildirmədən izah edib imposteri tapmaqdır.</p>
+                </div>
+                <div className="p-3.5 rounded-2xl bg-[rgba(244,63,94,0.08)] border border-[rgba(244,63,94,0.2)] space-y-1">
+                  <span className="font-bold text-[#f43f5e] block text-sm">🔴 İmposterlər:</span>
+                  <p className="text-[#f0ecf5]">Gizli sözü bilmir, yalnız kateqoriyanı görürlər (məsələn, "Yeməklər"). Vətəndaş kimi davranıb sözü təxmin etməlidirlər.</p>
+                </div>
+                <div className="p-3.5 rounded-2xl bg-[rgba(245,158,11,0.08)] border border-[rgba(245,158,11,0.2)] space-y-1">
+                  <span className="font-bold text-[#f59e0b] block text-sm">👁️ Hold-to-See Mexanikası:</span>
+                  <p className="text-[#f0ecf5]">Kartınızdakı söz və rolunuz gizlidir. Düyməni basıb saxlayaraq yalnız özünüz baxın.</p>
+                </div>
+              </div>
+              <button
+                onClick={() => setShowRules(false)}
+                className="btn-primary w-full py-3.5 text-sm"
+              >
+                Anladım! 👍
+              </button>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
