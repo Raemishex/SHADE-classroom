@@ -10,6 +10,10 @@ import CardRevealPage from './pages/CardRevealPage';
 import GamePage      from './pages/GamePage';
 import ResultPage    from './pages/ResultPage';
 
+import { HeaderBar }  from './components/HeaderBar';
+import { StoreModal } from './components/StoreModal';
+import { Scene3DBackground } from './components/3d/Scene3DBackground';
+
 /* ─── Page transition wrapper ─────────────────────── */
 const PageTransition = ({ children, id }: { children: React.ReactNode; id: string }) => (
   <motion.div
@@ -19,6 +23,7 @@ const PageTransition = ({ children, id }: { children: React.ReactNode; id: strin
     exit={{    opacity: 0, y: -8,  filter: 'blur(3px)' }}
     transition={{ duration: 0.28, ease: [0.25, 0.46, 0.45, 0.94] }}
     style={{ minHeight: '100dvh' }}
+    className="relative z-10"
   >
     {children}
   </motion.div>
@@ -40,7 +45,6 @@ export default function App() {
     const onConnect    = () => { setIsConnected(true); setMyInfo({ myId: socket.id ?? null }); };
     const onDisconnect = () => { setIsConnected(false); };
 
-    // If already connected at mount, set myId immediately
     if (socket.connected && socket.id) {
       setMyInfo({ myId: socket.id });
     }
@@ -115,7 +119,13 @@ export default function App() {
   })();
 
   return (
-    <div className="relative w-full min-h-dvh">
+    <div className="relative w-full min-h-dvh flex flex-col bg-[#1a1520] text-[#f0ecf5]">
+      {/* 3D Scene Ambient Background */}
+      <Scene3DBackground />
+
+      {/* Global Header & Store Modal */}
+      <HeaderBar />
+      <StoreModal />
 
       {/* ── Connection status banner ── */}
       <AnimatePresence>
@@ -127,11 +137,7 @@ export default function App() {
             transition={{ type: 'spring', damping: 20, stiffness: 300 }}
             className="fixed top-0 inset-x-0 z-[60] flex justify-center"
             style={{ paddingTop: 'env(safe-area-inset-top, 0px)' }}>
-            <div className="flex items-center gap-2 px-5 py-2.5 rounded-b-2xl font-mono text-xs text-white tracking-wider"
-              style={{
-                background: 'rgba(255,45,85,0.92)',
-                backdropFilter: 'blur(8px)',
-              }}>
+            <div className="flex items-center gap-2 px-5 py-2.5 rounded-b-2xl font-code text-xs text-[#1a1520] font-bold tracking-wider bg-[#f59e0b] shadow-lg">
               <WifiOff size={14} />
               Bağlantı kəsildi — yenidən qoşulunur...
             </div>
@@ -157,13 +163,8 @@ export default function App() {
             className="fixed top-4 left-1/2 -translate-x-1/2 z-[100] max-w-[88vw]"
             style={{ paddingTop: 'env(safe-area-inset-top, 0px)' }}>
             <div
-              className="flex items-center gap-3 px-5 py-3 rounded-2xl font-syne text-sm text-white shadow-2xl"
-              style={{
-                background: 'rgba(255,45,85,0.92)',
-                backdropFilter: 'blur(12px)',
-                border: '1px solid rgba(255,45,85,0.4)',
-                boxShadow: '0 8px 32px rgba(0,0,0,0.4), 0 0 16px rgba(255,45,85,0.2)',
-              }}>
+              className="flex items-center gap-3 px-5 py-3 rounded-2xl font-body text-sm text-white shadow-2xl bg-[#f43f5e] border border-[rgba(244,63,94,0.4)]"
+            >
               <AlertCircle size={16} className="shrink-0" />
               <span>{toast}</span>
             </div>
