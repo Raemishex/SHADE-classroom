@@ -45,8 +45,10 @@ export default function App() {
     const onConnect    = () => { setIsConnected(true); setMyInfo({ myId: socket.id ?? null }); };
     const onDisconnect = () => { setIsConnected(false); };
 
-    if (socket.connected && socket.id) {
-      setMyInfo({ myId: socket.id });
+    // If already connected at mount, update connection state immediately
+    if (socket.connected) {
+      setIsConnected(true);
+      if (socket.id) setMyInfo({ myId: socket.id });
     }
 
     socket.on('connect',    onConnect);
