@@ -36,6 +36,33 @@ export default function CardRevealPage() {
     socket.emit('player_seen_card', { roomCode: room.code });
   }, [room, hasConfirmed]);
 
+  // Desktop Keyboard Shortcuts (Space = Hold to Reveal, Enter = Confirm)
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.code === 'Space' && !e.repeat && !hasConfirmed) {
+        e.preventDefault();
+        handlePointerDown();
+      } else if (e.code === 'Enter' && hasSeenAtLeastOnce && !hasConfirmed) {
+        e.preventDefault();
+        handleConfirm();
+      }
+    };
+
+    const handleKeyUp = (e: KeyboardEvent) => {
+      if (e.code === 'Space') {
+        e.preventDefault();
+        handlePointerUp();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    window.addEventListener('keyup', handleKeyUp);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+      window.removeEventListener('keyup', handleKeyUp);
+    };
+  }, [handlePointerDown, handlePointerUp, handleConfirm, hasConfirmed, hasSeenAtLeastOnce]);
+
   const seenPlayers = room?.players.filter(p => p.hasSeenCard) ?? [];
   const totalPlayers = room?.players.length ?? 0;
 
