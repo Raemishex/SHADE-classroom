@@ -54,7 +54,7 @@ export default function LobbyPage() {
 
   const handleToggleReady = () => {
     SoundFX.playClick();
-    socket.emit('toggle_ready', { roomCode: room.code });
+    socket.emit('player_ready', { roomCode: room.code });
   };
 
   const handleStartGame = () => {
