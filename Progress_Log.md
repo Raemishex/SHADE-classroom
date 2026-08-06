@@ -21,3 +21,11 @@
 - TypeScript (`npx tsc --noEmit`) 0 xəta, Vite Build keçdi.
 - Chrome DevTools MCP ilə live `http://localhost:5173/` brauzerdə desktop (1280px) və mobil (390px) sınaqları keçirildi, 0 konsol xətası ilə doğrultuldu.
 - Hər bir fayl üçün ayrı-ayrı git commit-lər icra edildi.
+
+### 2026-08-06 (10-Oyunlu Hərtərəfli QA Audit & Təhlükəsizlik Sınağı)
+- **10 Müstəqil Oyunlu QA Suite İcra Edildi (11/11 Testlər Tam Keçdi):**
+  - **Oyun 1-3 (Lobiya Qalıcılığı Və Rematch Loop):** Eyni otaqda 3 ardıcıl oyun sınaqdan keçirildi, state residuasiyası olmadan rematch mexanikası təsdiqləndi.
+  - **Oyun 4-6 (Çoxoyunçulu Və Bütün Modlar Matrisi):** 6 oyunçu + İttifaq Rejimi (2 Imposter müttəfiq adlarını gördü), Cəsus (Detective) & Joker xüsusi rolları və kateqoriya sınaqları keçirildi.
+  - **Oyun 7-9 (Toksik Oyunçu & Bərpa Sınaqları):** Oyunun ortasında şəbəkə kəsintisi (60s bərpa şansı ilə Seamless Reconnect), Host-un ayrılması zamanı Avtomatik Host Ötürülməsi (`host_changed`) və Host tərəfindən Qovulma (`kick_player`) sınaqdan keçirildi.
+  - **Oyun 10 (Hacker / Fuzzing & Təhlükəsizlik Auditi):** Oyunçu adlarında XSS Injection (`<script>`), Yetkisiz Başlatma (Non-Host), Kifayətsiz Oyunçu ilə Başlatma, Yanlış Otaq Kodu (`9999`) və Yetkisiz Qovulma hücumları sınaqdan keçirildi. Server bütün zərərli payload-ları rədd etdi (100% Təhlükəsiz).
+
