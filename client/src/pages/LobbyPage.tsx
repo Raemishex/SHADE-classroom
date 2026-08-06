@@ -190,12 +190,12 @@ export default function LobbyPage() {
           </div>
         </div>
 
-        {/* Host Controls Section */}
-        <div className="card-surface p-4 rounded-3xl space-y-4">
+        {/* Host Controls & Category Settings Section */}
+        <div className="card-surface p-4 md:p-6 rounded-3xl space-y-4">
           <div className="flex items-center justify-between pb-2 border-b border-[rgba(163,155,181,0.1)]">
             <h3 className="font-heading font-bold text-lg text-[#f0ecf5] flex items-center gap-2">
               <Sparkles className="w-5 h-5 text-[#f59e0b]" />
-              Oyun Tənzimləmələri {isHost ? '(Host)' : '(İzləmə)'}
+              {isHost ? 'Oyun Tənzimləmələri (Host)' : 'Oyun Tənzimləmələri Və Kateqoriyalar'}
             </h3>
           </div>
 
@@ -287,7 +287,7 @@ export default function LobbyPage() {
             </button>
           </div>
 
-          {/* Categories Grid */}
+          {/* Categories Section: Host Interactive vs Non-Host Summary */}
           <div className="space-y-2 pt-2 border-t border-[rgba(163,155,181,0.1)]">
             <div className="flex items-center justify-between">
               <span className="text-xs font-body text-[#a39bb5] uppercase tracking-wider">
@@ -303,26 +303,47 @@ export default function LobbyPage() {
               )}
             </div>
 
-            <div className="grid grid-cols-2 gap-2 max-h-48 overflow-y-auto pr-1">
-              {categories.map((cat) => {
-                const isSelected = room.settings.selectedCategories.includes(cat.id);
-                return (
-                  <button
-                    key={cat.id}
-                    disabled={!isHost}
-                    onClick={() => toggleCategory(cat.id)}
-                    className={`p-2.5 rounded-xl border text-xs font-body font-medium flex items-center gap-2 transition-all ${
-                      isSelected
-                        ? 'bg-[rgba(245,158,11,0.15)] border-[rgba(245,158,11,0.35)] text-[#f0ecf5]'
-                        : 'bg-[rgba(163,155,181,0.05)] border-[rgba(163,155,181,0.1)] text-[#a39bb5]'
-                    }`}
-                  >
-                    <span>{cat.icon}</span>
-                    <span className="truncate">{cat.nameAz}</span>
-                  </button>
-                );
-              })}
-            </div>
+            {isHost ? (
+              /* Host Interactive Selection Grid */
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-2 max-h-48 overflow-y-auto pr-1">
+                {categories.map((cat) => {
+                  const isSelected = room.settings.selectedCategories.includes(cat.id);
+                  return (
+                    <button
+                      key={cat.id}
+                      onClick={() => toggleCategory(cat.id)}
+                      className={`p-2.5 rounded-xl border text-xs font-body font-medium flex items-center gap-2 transition-all ${
+                        isSelected
+                          ? 'bg-[rgba(245,158,11,0.15)] border-[rgba(245,158,11,0.35)] text-[#f0ecf5]'
+                          : 'bg-[rgba(163,155,181,0.05)] border-[rgba(163,155,181,0.1)] text-[#a39bb5]'
+                      }`}
+                    >
+                      <span>{cat.icon}</span>
+                      <span className="truncate">{cat.nameAz}</span>
+                    </button>
+                  );
+                })}
+              </div>
+            ) : (
+              /* Non-Host Locked Category Summary Badge View */
+              <div className="flex flex-wrap gap-1.5 p-3 rounded-2xl bg-[rgba(163,155,181,0.04)] border border-[rgba(163,155,181,0.08)] max-h-36 overflow-y-auto">
+                {room.settings.selectedCategories.length === 0 ? (
+                  <span className="text-xs text-[#a39bb5] italic">Bütün kateqoriyalar aktivdir</span>
+                ) : (
+                  categories
+                    .filter(c => room.settings.selectedCategories.includes(c.id))
+                    .map((cat) => (
+                      <span
+                        key={cat.id}
+                        className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-[rgba(245,158,11,0.1)] border border-[rgba(245,158,11,0.2)] text-xs text-[#f0ecf5]"
+                      >
+                        <span>{cat.icon}</span>
+                        <span>{cat.nameAz}</span>
+                      </span>
+                    ))
+                )}
+              </div>
+            )}
           </div>
         </div>
 
