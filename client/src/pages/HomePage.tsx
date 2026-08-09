@@ -44,7 +44,7 @@ export default function HomePage() {
         className="text-center mb-10 select-none"
       >
         <div className="relative inline-block">
-          <h1 className="font-heading font-black text-6xl md:text-7xl leading-none tracking-[0.15em] text-[#f0ecf5]">
+          <h1 className="font-heading font-black text-4xl sm:text-5xl md:text-6xl lg:text-7xl leading-none tracking-[0.15em] text-[#f0ecf5]">
             SHADE
           </h1>
           <div className="h-1 w-16 mx-auto mt-2 bg-[#f59e0b] rounded-full shadow-[0_0_12px_rgba(245,158,11,0.4)]" />
@@ -153,7 +153,7 @@ export default function HomePage() {
               </div>
 
               <div>
-                <label htmlFor="create-name" className="block text-xs font-body text-[#a39bb5] mb-2 uppercase tracking-wider flex items-center gap-1.5">
+                <label htmlFor="create-name" className="text-xs font-body text-[#a39bb5] mb-2 uppercase tracking-wider flex items-center gap-1.5">
                   <User className="w-4 h-4 text-[#f59e0b]" /> Sizin Adınız
                 </label>
                 <input
@@ -201,7 +201,7 @@ export default function HomePage() {
               </div>
 
               <div>
-                <label htmlFor="join-name" className="block text-xs font-body text-[#a39bb5] mb-2 uppercase tracking-wider flex items-center gap-1.5">
+                <label htmlFor="join-name" className="text-xs font-body text-[#a39bb5] mb-2 uppercase tracking-wider flex items-center gap-1.5">
                   <User className="w-4 h-4 text-[#f59e0b]" /> Sizin Adınız
                 </label>
                 <input
