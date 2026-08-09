@@ -225,7 +225,7 @@ export default function LobbyPage() {
 
           {/* Advanced Special Roles Toggles (Opsional Detective & Joker) */}
           <div className="space-y-2 pt-2 border-t border-[rgba(163,155,181,0.1)]">
-            <span className="text-xs font-body text-[#a39bb5] uppercase tracking-wider block flex items-center gap-1">
+            <span className="text-xs font-body text-[#a39bb5] uppercase tracking-wider flex items-center gap-1">
               <Wand2 className="w-3.5 h-3.5 text-[#f59e0b]" /> Xüsusi Rollar
             </span>
 
@@ -346,6 +346,31 @@ export default function LobbyPage() {
             )}
           </div>
         </div>}
+
+        {/* Non-host waiting info card */}
+        {!isHost && (
+          <div className="card-surface p-4 md:p-5 rounded-3xl space-y-3">
+            <div className="flex items-center gap-2 text-[#a39bb5]">
+              <Sparkles className="w-4 h-4 text-[#f59e0b]" />
+              <span className="text-sm font-body">Host oyunu tənzimləyir...</span>
+            </div>
+            <div className="flex flex-wrap gap-2">
+              {(room.settings?.selectedCategories ?? []).length > 0 ? (
+                (room.settings?.selectedCategories ?? []).map((catId: string) => {
+                  const cat = categories.find(c => c.id === catId);
+                  return cat ? (
+                    <span key={catId} className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[rgba(245,158,11,0.08)] border border-[rgba(245,158,11,0.2)] text-xs text-[#f59e0b] font-medium">
+                      <span>{cat.icon}</span>
+                      <span>{cat.nameAz}</span>
+                    </span>
+                  ) : null;
+                })
+              ) : (
+                <span className="text-xs text-[#a39bb5] opacity-60">Hələ kateqoriya seçilməyib</span>
+              )}
+            </div>
+          </div>
+        )}
 
       </div>
 
