@@ -153,10 +153,12 @@ export default function HomePage() {
               </div>
 
               <div>
-                <label className="block text-xs font-body text-[#a39bb5] mb-2 uppercase tracking-wider flex items-center gap-1.5">
+                <label htmlFor="create-name" className="block text-xs font-body text-[#a39bb5] mb-2 uppercase tracking-wider flex items-center gap-1.5">
                   <User className="w-4 h-4 text-[#f59e0b]" /> Sizin Adınız
                 </label>
                 <input
+                  id="create-name"
+                  name="playerName"
                   type="text"
                   placeholder="Məsələn: Orxan"
                   value={name}
@@ -199,10 +201,12 @@ export default function HomePage() {
               </div>
 
               <div>
-                <label className="block text-xs font-body text-[#a39bb5] mb-2 uppercase tracking-wider flex items-center gap-1.5">
+                <label htmlFor="join-name" className="block text-xs font-body text-[#a39bb5] mb-2 uppercase tracking-wider flex items-center gap-1.5">
                   <User className="w-4 h-4 text-[#f59e0b]" /> Sizin Adınız
                 </label>
                 <input
+                  id="join-name"
+                  name="playerName"
                   type="text"
                   placeholder="Məsələn: Nərmin"
                   value={name}
@@ -214,10 +218,12 @@ export default function HomePage() {
               </div>
 
               <div>
-                <label className="block text-xs font-code text-[#a39bb5] mb-2 uppercase tracking-wider">
+                <label htmlFor="join-code" className="block text-xs font-code text-[#a39bb5] mb-2 uppercase tracking-wider">
                   4-Rəqəmli Otaq Kodu
                 </label>
                 <input
+                  id="join-code"
+                  name="roomCode"
                   type="text"
                   placeholder="4582"
                   value={roomCode}
