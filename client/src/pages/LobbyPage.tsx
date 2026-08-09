@@ -23,7 +23,7 @@ export default function LobbyPage() {
   const myPlayer = room.players.find(p => p.id === myId);
   const isHost = myPlayer?.isHost ?? false;
   const readyCount = room.players.filter(p => p.isReady).length;
-  const canStart = readyCount >= 3 && room.settings.selectedCategories.length > 0;
+  const canStart = readyCount >= 3;
   const readyPct = room.players.length > 0 ? (readyCount / room.players.length) * 100 : 0;
 
   const emitSetting = (key: string, value: unknown) => {
@@ -190,8 +190,8 @@ export default function LobbyPage() {
           </div>
         </div>
 
-        {/* Host Controls & Category Settings Section */}
-        <div className="card-surface p-4 md:p-6 rounded-3xl space-y-4">
+        {/* Host Controls & Category Settings Section — Only visible to Host */}
+        {isHost && <div className="card-surface p-4 md:p-6 rounded-3xl space-y-4">
           <div className="flex items-center justify-between pb-2 border-b border-[rgba(163,155,181,0.1)]">
             <h3 className="font-heading font-bold text-lg text-[#f0ecf5] flex items-center gap-2">
               <Sparkles className="w-5 h-5 text-[#f59e0b]" />
@@ -345,7 +345,7 @@ export default function LobbyPage() {
               </div>
             )}
           </div>
-        </div>
+        </div>}
 
       </div>
 
